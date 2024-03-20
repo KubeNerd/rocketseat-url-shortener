@@ -4,11 +4,19 @@ import { redis } from "../lib/redis";
 export async function metricsRoutes(app: FastifyInstance){
     app.get('/metrics', async (request: FastifyRequest, reply: FastifyReply) =>{
 
-        const metrics =  await redis.zRangeByScoreWithScores('metrics', 0, 50);
+        const result =  await redis.zRangeByScoreWithScores('metrics', 0, 50);
 
-        const result = metrics.sort();
+        const metrics =  result
+        .sort((a, b) => b.score - a.score)
+        .map(item => {
+            return {
+                shortLinkId: Number(item.value),
+                clicks: item.score
+            }
 
-        return result;
+        })
+
+        return metrics;
 
     });
 }
