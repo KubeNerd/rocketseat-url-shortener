@@ -1,0 +1,9 @@
+#https://shisho.dev/blog/posts/how-to-use-dockerignore/
+
+*.md
+.env
+.aws
+.corverage
+*.yaml
+.gitignore
+.env*
